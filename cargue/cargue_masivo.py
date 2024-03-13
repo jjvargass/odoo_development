@@ -5,12 +5,14 @@ import logging
 import argparse
 import erppeek
 
-from odoo_tools import OdooTools
-
+from cargue_tools import CargueTools
 
 logging.basicConfig(level=logging.DEBUG)
 _logger = logging.getLogger('cargue')
 
+def get_conection(options):
+    server = options.host_odoo + ':' + options.port_odoo
+    return erppeek.Client(server, options.db_name, options.db_user, options.db_password)
 
 def main():
     parser = argparse.ArgumentParser(description='Cargue Masivo Odoo.')
@@ -27,7 +29,7 @@ def main():
     odoo_client = get_conection(options)
     #_logger.info(odoo_client.common.version())
 
-    utilidad = OdooTools(odoo_client, _logger)
+    utilidad = CargueTools(odoo_client, _logger)
     
     # usuarios
     _logger.info("Usuario========")
@@ -36,22 +38,45 @@ def main():
 
     # contacto
     _logger.info("Contacto========")
+    padre_contacto = utilidad.create_find_res_partner(
+        True,
+        None,
+        'MINTIC - Ministerio TIC',
+        'Edificio Murillo Toro Cra. 8a entre calles 12A y 12B Bogotá',
+        '+57 601 344 34 60',
+        '',
+        'minticresponde@mintic.gov.co',
+        'https://www.mintic.gov.co/',
+        '',
+    )
+
     contacto = utilidad.create_find_res_partner(
         False,
-        'MINTIC - Ministerio TIC',
-        # 'Edificio Murillo Toro Cra. 8a entre calles 12A y 12B Bogotá',
-        # '+57 601 344 34 60',
-        # '',
-        # 'minticresponde@mintic.gov.co',
-        # 'https://www.mintic.gov.co/',
+        padre_contacto.id,
+        'Lina Zuluaga',
+        'Edificio Murillo Piso 3',
+        '',
+        '3102422608',
+        'minticresponde@mintic.gov.co',
+        'https://www.mintic.gov.co/',
+        'Asesora de IA',
     )
     _logger.info(contacto)
 
-def get_conection(options):
-    server = options.host_odoo + ':' + options.port_odoo
-    return erppeek.Client(server, options.db_name, options.db_user, options.db_password)
-
-
+    _logger.info("Oportunidad========")
+    oportunidad = utilidad.create_oportunidad(
+        'Redes Sociales JOTAAAAAAAA',
+        832837311,
+        20.0,
+        contacto.id,
+        'jose@agatadata.com',
+        'Producto',
+        'Redes Sociales',
+        'Wise CX',
+        'Nación',
+        'No',
+    )
+    _logger.info(oportunidad)
 
 if __name__ == '__main__':
     main()
