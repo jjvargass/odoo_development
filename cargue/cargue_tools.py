@@ -47,10 +47,13 @@ class CargueTools():
             })
         return res_partner
 
-    def create_oportunidad(self, name='', revenue=0, probability=0.0, partner_id=0, vendedor='', linea_negocio='', tipo_solucion='', aliado='', estrategia='',  presupuesto=''):
+    def create_oportunidad(self, name='', revenue=0, probability=0.0, partner_id=0, vendedor='', prioridad='', estado='', linea_negocio='', tipo_solucion='', aliado='', estrategia='', presupuesto=''):
 
         # buscar usuario
         vendedor_id = self.get_user(vendedor,None)
+
+        # estado
+        estado_id = self.odoo_client.model('crm.stage').get([('name','=',estado.strip())])
 
         # linea de negocio
         linea_negocio_id = self.odoo_client.model('crm.lead.business.line').get([('name','=',linea_negocio.strip())])
@@ -92,6 +95,8 @@ class CargueTools():
                 'probability': probability,
                 'partner_id': partner_id,
                 'user_id': vendedor_id,
+                'priority': prioridad,
+                'stage_id': estado_id,
                 'linea_negocio_id': linea_negocio_id,
                 'tipo_solucion_id': tipo_solucion_id,
                 'aliado_id': aliado_id,
