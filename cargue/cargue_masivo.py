@@ -26,63 +26,18 @@ def main():
     parser.add_argument('-k', '--port_odoo',   dest='port_odoo',   help='Odoo server port', default='8069')
 
     options = parser.parse_args()
-
     odoo_client = get_conection(options)
+
+    _logger.info("######################################")
+    _logger.info("########## Cargue Masivo #############")
+    _logger.info("######################################")
 
     cargue_crm_agata = CargueCrmAgata(odoo_client, _logger, options)
     cargue_crm_agata.open_file_crm_agata()
 
-
-    # utilidad = CargueTools(odoo_client, _logger)
-
-    # # usuarios
-    # _logger.info("Usuario========")
-    # usuario = utilidad.get_user("portal",None)
-    # _logger.info(usuario.partnet_id)
-
-    # # contacto
-    # _logger.info("Contacto========")
-    # padre_contacto = utilidad.create_find_res_partner(
-    #     True,
-    #     None,
-    #     'MINTIC - Ministerio TIC',
-    #     'Edificio Murillo Toro Cra. 8a entre calles 12A y 12B Bogotá',
-    #     '+57 601 344 34 60',
-    #     '',
-    #     'minticresponde@mintic.gov.co',
-    #     'https://www.mintic.gov.co/',
-    #     '',
-    # )
-
-    # contacto = utilidad.create_find_res_partner(
-    #     False,
-    #     padre_contacto.id,
-    #     'Lina Zuluaga',
-    #     'Edificio Murillo Piso 3',
-    #     '',
-    #     '3102422608',
-    #     'minticresponde@mintic.gov.co',
-    #     'https://www.mintic.gov.co/',
-    #     'Asesora de IA',
-    # )
-    # _logger.info(contacto)
-
-    # _logger.info("Oportunidad========")
-    # oportunidad = utilidad.create_oportunidad(
-    #     'Redes Sociales JOTAAAAAAAA',
-    #     832837311,
-    #     20.0,
-    #     contacto.id,
-    #     'jose@xx.com',
-    #     '3',
-    #     'Perdido',
-    #     'Producto',
-    #     'Redes Sociales',
-    #     'Wise CX',
-    #     'Nación',
-    #     'No',
-    # )
-    # _logger.info(oportunidad)
+    _logger.info("######################################")
+    _logger.info("####### Fin Cargue Masivo ############")
+    _logger.info("######################################")
 
 if __name__ == '__main__':
     main()
