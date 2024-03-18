@@ -23,10 +23,12 @@ class CargueCrmAgata():
             reader = csv.DictReader(csvfile)
             rowcount  = 0
             for row in reader:
+                cliente_compania = None
+                cliente = None
                 rowcount+= 1
-                self._logger.info('Line CSV:' + str(rowcount))
+                self._logger.info('CSV Linea ' + str(rowcount) + ': Registro de compañia ' + row['cliente_compania_nombre'])
                 # crear cliente Compañia
-                cliente_compañia = cargue_tools.create_find_res_partner(
+                cliente_compania = cargue_tools.create_find_res_partner(
                     True,
                     None,
                     row['cliente_compania_nombre'],
@@ -38,9 +40,10 @@ class CargueCrmAgata():
                     '',
                 )
                 if row['cliente_individuo_nombre']:
+                    self._logger.info('CSV Linea ' + str(rowcount) + ': Registro Empleado ' + row['cliente_individuo_nombre'])
                     cliente = cargue_tools.create_find_res_partner(
                         False,
-                        cliente_compañia.id,
+                        cliente_compania.id,
                         row['cliente_individuo_nombre'],
                         row['cliente_individuo_direccion'],
                         row['cliente_individuo_telefono'],
@@ -48,4 +51,37 @@ class CargueCrmAgata():
                         row['cliente_individuo_email'],
                         row['cliente_individuo_web'],
                         row['cliente_individuo_puesto_trabajo'],
+                    )
+                # Oportunidad
+                if cliente:
+                    self._logger.info('CSV Linea ' + str(rowcount) + ': Registro de Oportunidad ' + row['oportunidad_nombre'])
+                    oportunidad  = cargue_tools.create_oportunidad(
+                        row['oportunidad_nombre'],
+                        row['oportunidad_ingreso'],
+                        row['oportunidad_probabilidad'],
+                        cliente.id,
+                        row['oportunidad_vendedor'],
+                        row['oportunidad_prioridad'],
+                        row['oportunidad_estado'],
+                        row['oportunidad_linea_negocio'],
+                        row['oportunidad_tipo_solucion'],
+                        row['oportunidad_aliado'],
+                        row['oportunidad_estrategia'],
+                        row['oportunidad_presupuesto'],
+                    )
+                elif cliente_compania:
+                    self._logger.info('CSV Linea ' + str(rowcount) + ': Registro de Oportunidad ' + row['oportunidad_nombre'])
+                    oportunidad  = cargue_tools.create_oportunidad(
+                        row['oportunidad_nombre'],
+                        row['oportunidad_ingreso'],
+                        row['oportunidad_probabilidad'],
+                        cliente_compania.id,
+                        row['oportunidad_vendedor'],
+                        row['oportunidad_prioridad'],
+                        row['oportunidad_estado'],
+                        row['oportunidad_linea_negocio'],
+                        row['oportunidad_tipo_solucion'],
+                        row['oportunidad_aliado'],
+                        row['oportunidad_estrategia'],
+                        row['oportunidad_presupuesto'],
                     )

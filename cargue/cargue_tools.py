@@ -31,7 +31,7 @@ class CargueTools():
             ('code','=', 'DC')
         ])
         if not res_partner:
-            self._logger.info('No Existe Contacto: ' + name + '- Se Procede a Crear')
+            # self._logger.info('No Existe Contacto: ' + name + '- Se Procede a Crear')
             res_partner = self.odoo_client.model('res.partner').create({
                 'is_company': is_company,
                 'parent_id' : parent_id,
