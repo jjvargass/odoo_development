@@ -47,7 +47,7 @@ class CargueTools():
             })
         return res_partner
 
-    def create_oportunidad(self, name='', revenue=0, probability=0.0, partner_id=0, vendedor='', prioridad='', estado='', linea_negocio='', tipo_solucion='', aliado='', estrategia='', presupuesto=''):
+    def create_oportunidad(self, name='', revenue=0, probability=0.0, partner_id=0, vendedor='', prioridad='', estado='', linea_negocio='', tipo_solucion='', aliado='', estrategia='', presupuesto='', fecha_cierre=''):
 
         # buscar usuario
         vendedor_id = self.get_user(vendedor,None)
@@ -102,5 +102,6 @@ class CargueTools():
                 'aliado_id': aliado_id,
                 'estrategia_id': estrategia_id,
                 'presupuesto_id': presupuesto_id,
+                'date_deadline': fecha_cierre,
         })
         return oportunidad

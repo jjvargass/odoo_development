@@ -68,6 +68,7 @@ class CargueCrmAgata():
                         row['oportunidad_aliado'],
                         row['oportunidad_estrategia'],
                         row['oportunidad_presupuesto'],
+                        row['oportunidad_cierre_esperado'],
                     )
                 elif cliente_compania:
                     self._logger.info('CSV Linea ' + str(rowcount) + ': Registro de Oportunidad ' + row['oportunidad_nombre'])
@@ -84,4 +85,5 @@ class CargueCrmAgata():
                         row['oportunidad_aliado'],
                         row['oportunidad_estrategia'],
                         row['oportunidad_presupuesto'],
+                        row['oportunidad_cierre_esperado'],
                     )
