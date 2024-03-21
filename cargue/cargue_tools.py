@@ -153,4 +153,46 @@ class CargueTools():
         separador = os.path.sep  # obtiene segun el sistema operativo
         dir_actual = os.path.dirname(os.path.abspath(__file__))
 
-        empleado = self.odoo_client.model('hr.employee').get([('work_email','=',correo_corporativo.strip())])
+        # empleado
+        empleado_id = self.odoo_client.model('hr.employee').get([('work_email','=',correo_corporativo.strip())])
+
+        # gerencia
+        department_id = self.odoo_client.model('hr.department').get([('name','=',gerencia.strip())])
+
+        # Puesto de Trabajo
+        job_id = self.odoo_client.model('hr.job').get([('name','=',cargo.strip())])
+
+        # nacionalidad
+        nacionalidad_id = self.odoo_client.model('res.country').get([('name','=',nacionalidad.strip())])
+
+        # pais_nacimiento
+        pais_nacimiento_id = self.odoo_client.model('res.country').get([('name','=',pais_nacimiento.strip())])
+
+        errores = ""
+        if not empleado_id:
+            self._logger.info("El empleado: " + correo_corporativo  +" No se ha encontrado en el sistema")
+        if not department_id:
+            errores = errores + "\nLa gerencia : " + gerencia + " No se ha encontrado en el sistema"
+        if not job_id:
+            errores = errores + "\nEl Puesto de trabajo : " + cargo + " No se ha encontrado en el sistema"
+        if not nacionalidad_id:
+            errores = errores + "\nLa macionalidad : " + nacionalidad + " No se ha encontrado en el sistema"
+        if not pais_nacimiento_id:
+            errores = errores + "\El pais de nacimiento  : " + pais_nacimiento + " No se ha encontrado en el sistema"
+
+        if errores:
+            raise Exception("Error con la información suministrada para los parametos agata del módulo Emepleados " + errores )
+
+        # Actualizar empleado
+        if empleado_id:
+            empleado_id.write({
+                'mobile_phone': celular,
+                'department_id': department_id,
+                'job_id': job_id,
+                'marital': estado_civil,
+                'children': numero_hijos,
+                'emergency_contact':emergencia_nombre,
+                'emergency_phone': emergencia_cel,
+                'country_id':nacionalidad_id,
+                'identification_id': numero_identificación,
+            })
