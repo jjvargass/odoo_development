@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 #coding: utf-8
 
+import datetime
+import os
 
 class CargueTools():
     def __init__(self, odoo_client, _logger):
@@ -47,7 +49,7 @@ class CargueTools():
             })
         return res_partner
 
-    def create_oportunidad(self, name='', revenue=0, probability=0.0, partner_id=0, vendedor='', prioridad='', estado='', linea_negocio='', tipo_solucion='', aliado='', estrategia='', presupuesto='', fecha_cierre=''):
+    def create_oportunidad(self, name='', revenue=0, probability=0.0, partner_id=0, vendedor='', prioridad='', estado='', linea_negocio='', tipo_solucion='', aliado='', estrategia='', presupuesto='', fecha_cierre='', descripcion=''):
 
         # buscar usuario
         vendedor_id = self.get_user(vendedor,None)
@@ -87,6 +89,9 @@ class CargueTools():
         if errores:
             raise Exception("Error con la información suministrada para los parametos agata del CRM " + errores )
 
+        if not fecha_cierre:
+            #fecha_cierre = str(datetime.datetime.now().date())
+            fecha_cierre = '2024-12-31'
 
         # Crear oportunidad
         oportunidad = self.odoo_client.model('crm.lead').create({
@@ -103,5 +108,21 @@ class CargueTools():
                 'estrategia_id': estrategia_id,
                 'presupuesto_id': presupuesto_id,
                 'date_deadline': fecha_cierre,
+                'description' : descripcion,
         })
         return oportunidad
+
+
+    def eliminar_all_oportunidad(self):
+        oportunidades_ids = self.odoo_client.model('crm.lead').search([])
+        for oportunidad in oportunidades_ids:
+            self._logger.info(oportunidad)
+            eliminado = self.odoo_client.model('crm.lead').get(oportunidad).unlink()
+
+    ## hr.employee ##
+    def buscar_actualizar_hr_employee(self):
+        self._logger.info("hola")
+
+        # Ruta Actual
+        separador = os.path.sep  # obtiene segun el sistema operativo
+        dir_actual = os.path.dirname(os.path.abspath(__file__))

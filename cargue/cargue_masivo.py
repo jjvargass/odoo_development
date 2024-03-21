@@ -32,8 +32,16 @@ def main():
     _logger.info("########## Cargue Masivo #############")
     _logger.info("######################################")
 
-    cargue_crm_agata = CargueCrmAgata(odoo_client, _logger, options)
-    cargue_crm_agata.open_file_crm_agata()
+    # cargue_crm_agata = CargueCrmAgata(odoo_client, _logger, options)
+    # cargue_crm_agata.open_file_crm_agata()
+
+    # cargue_tools = CargueTools(odoo_client, _logger)
+    # cargue_tools.eliminar_all_oportunidad()
+
+    # EMPLEADOS
+    cargue_tools = CargueTools(odoo_client, _logger)
+    cargue_tools.buscar_actualizar_hr_employee()
+
 
     _logger.info("######################################")
     _logger.info("####### Fin Cargue Masivo ############")
