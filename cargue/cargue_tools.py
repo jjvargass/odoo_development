@@ -120,9 +120,37 @@ class CargueTools():
             eliminado = self.odoo_client.model('crm.lead').get(oportunidad).unlink()
 
     ## hr.employee ##
-    def buscar_actualizar_hr_employee(self):
-        self._logger.info("hola")
+    def buscar_actualizar_hr_employee(self,
+            id_agata="",
+            nombres_apellidos="",
+            gerencia="",
+            cargo="",
+            correo_corporativo="",
+            direccion="",
+            idioma="",
+            correo_personal="",
+            celular="",
+            estado_civil="",
+            numero_hijos="",
+            emergencia_nombre="",
+            emergencia_cel="",
+            nacionalidad="",
+            numero_identificación="",
+            genero="",
+            fecha_nacimiento="",
+            lugar_de_nacimiento="",
+            pais_nacimiento="",
+            tipo_de_empleado="",
+            contrato_fecha_inciaio="",
+            contrato_fecha_fin="",
+            contrato_programa_trabajo="",
+            contrato_tipo="",
+            contrato_descripcion="",
+        ):
 
+        self._logger.info("hola")
         # Ruta Actual
         separador = os.path.sep  # obtiene segun el sistema operativo
         dir_actual = os.path.dirname(os.path.abspath(__file__))
+
+        empleado = self.odoo_client.model('hr.employee').get([('work_email','=',correo_corporativo.strip())])
